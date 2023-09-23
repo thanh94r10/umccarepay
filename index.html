@@ -3,25 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chờ và Chuyển hướng</title>
-</head>
-<body>
-    <h1>Chờ và Chuyển hướng sau 3 giây</h1>
-
-    <script>
-        // Định nghĩa URL scheme của ứng dụng
-        const appScheme = "patient://";
-
-        // Hàm chuyển hướng sau 3 giây
-        function redirectToApp() {
-            setTimeout(function() {
-                // Chuyển hướng đến URL scheme của ứng dụng
-                window.location.href = appScheme;
-            }, 3000); // 3 giây
+    <title>Thông báo Thanh toán</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 100px;
+        }
+        
+        .message {
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
-        // Gọi hàm chuyển hướng
-        redirectToApp();
+        .countdown {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        #backButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        Thanh toán thành công. Vui lòng chờ <span id="countdown" class="countdown">3</span>s để hoàn tất giao dịch.
+    </div>
+
+    <button id="backButton" onclick="goBack()">Quay lại ứng dụng</button>
+
+    <script>
+        // Hàm chuyển hướng về ứng dụng sau khi đếm ngược
+        function redirectToApp() {
+            const appScheme = "patient://";
+            window.location.href = appScheme;
+        }
+
+        // Hàm bắt đầu đếm ngược
+        function startCountdown() {
+            let seconds = 3;
+            const countdownElement = document.getElementById("countdown");
+            const countdownInterval = setInterval(function() {
+                seconds--;
+                countdownElement.innerText = seconds;
+                if (seconds === 0) {
+                    clearInterval(countdownInterval);
+                    redirectToApp();
+                }
+            }, 1000);
+        }
+
+        // Hàm quay lại ứng dụng khi nút "Quay lại ứng dụng" được nhấn
+        function goBack() {
+            redirectToApp();
+        }
+
+        // Bắt đầu đếm ngược khi trang web tải
+        window.onload = startCountdown;
     </script>
 </body>
 </html>
