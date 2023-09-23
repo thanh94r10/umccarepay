@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chờ và Chuyển hướng</title>
+</head>
+<body>
+    <h1>Chờ và Chuyển hướng sau 3 giây</h1>
+
+    <script>
+        // Định nghĩa URL scheme của ứng dụng
+        const appScheme = "patient://";
+
+        // Hàm chuyển hướng sau 3 giây
+        function redirectToApp() {
+            setTimeout(function() {
+                // Chuyển hướng đến URL scheme của ứng dụng
+                window.location.href = appScheme;
+            }, 3000); // 3 giây
+        }
+
+        // Gọi hàm chuyển hướng
+        redirectToApp();
+    </script>
+</body>
+</html>
