@@ -1,72 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông báo Thanh toán</title>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title>UMC Care - KẾT QUẢ GIAO DỊCH</title>
+    <link href="Styles/bootstrap.min.css" rel="stylesheet" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <style>
         body {
+            background-color: #f4f4f4;
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding: 100px;
+            margin: 0;
+            padding: 0;
         }
-        
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            text-align: center;
+        }
+
+        .header h3 {
+            margin: 0;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            text-align: center;
+        }
+
+        /* Đặt quy tắc CSS cho hình ảnh */
+        .header-image {
+            width: 100%;
+            max-height: 100vh;
+            /* Chiều cao tối đa bằng chiều cao của màn hình */
+            object-fit: cover;
+        }
+
+        .text-muted {
+            position: relative;
+            z-index: 1;
+        }
+
+        .table-responsive {
+            padding: 10px;
+        }
+
+        .table-responsive div {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .table-responsive div:last-child {
+            margin-bottom: 0;
+        }
+
         .message {
-            font-size: 24px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
         }
 
         .countdown {
-            font-size: 32px;
             font-weight: bold;
+            color: #007bff;
         }
 
-        #backButton {
-            padding: 10px 20px;
-            font-size: 18px;
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
             background-color: #007bff;
             color: #fff;
             border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
-    <div class="message">
-        Thanh toán thành công. Vui lòng chờ <span id="countdown" class="countdown">3</span>s để hoàn tất giao dịch.
+    <!-- Thẻ <img> ở đầu trang -->
+    <img src="https://www.bvdaihoc.com.vn/images/header.png" alt="Header Image" class="header-image">
+
+    <div class="container">
+        <div class="header clearfix">
+            <h3 class="text-muted">Kết quả thanh toán</h3>
+        </div>
+        <div class="table-responsive">
+            <div runat="server" id="displayMsg"></div>
+        </div>
+        <div class="table-responsive">
+            <div runat="server" id="displayTxnRef"></div>
+        </div>
+        <div class="table-responsive">
+            <div runat="server" id="displayVnpayTranNo"></div>
+        </div>
+        <div class="table-responsive">
+            <div runat="server" id="displayAmount"></div>
+        </div>
+        <div class="table-responsive">
+            <div runat="server" id="displayBankCode"></div>
+        </div>
     </div>
-
-    <button id="backButton" onclick="goBack()">Quay lại ứng dụng</button>
-
-    <script>
-        // Hàm chuyển hướng về ứng dụng sau khi đếm ngược
-        function redirectToApp() {
-            const appScheme = "patient://";
-            window.location.href = appScheme;
-        }
-
-        // Hàm bắt đầu đếm ngược
-        function startCountdown() {
-            let seconds = 3;
-            const countdownElement = document.getElementById("countdown");
-            const countdownInterval = setInterval(function() {
-                seconds--;
-                countdownElement.innerText = seconds;
-                if (seconds === 0) {
-                    clearInterval(countdownInterval);
-                    redirectToApp();
-                }
-            }, 1000);
-        }
-
-        // Hàm quay lại ứng dụng khi nút "Quay lại ứng dụng" được nhấn
-        function goBack() {
-            redirectToApp();
-        }
-
-        // Bắt đầu đếm ngược khi trang web tải
-        window.onload = startCountdown;
-    </script>
+    <br />
+    <div class="message">
+        <div runat="server" id="displayMsg2"></div>
+        Vui lòng chờ <span id="countdown" class="countdown">3</span>s để hoàn tất giao dịch.
+    </div>
+    <div class="button-container">
+        <button id="backButton" onclick="goBack()">Quay lại ứng dụng</button>
+    </div>
 </body>
+<script>
+    // Hàm chuyển hướng về ứng dụng sau khi đếm ngược
+    function redirectToApp() {
+        const appScheme = "patient://";
+        window.location.href = appScheme;
+
+
+
+    }
+    // Hàm bắt đầu đếm ngược
+    function startCountdown() {
+        let seconds = 3;
+        const countdownElement = document.getElementById("countdown");
+        const countdownInterval = setInterval(function () {
+            seconds--;
+            countdownElement.innerText = seconds;
+            if (seconds === 0) {
+                clearInterval(countdownInterval);
+                redirectToApp();
+            }
+        }, 1000);
+    }
+    // Hàm quay lại ứng dụng khi nút "Quay lại ứng dụng" được nhấn
+    function goBack() {
+        redirectToApp();
+    }
+
+
+
+    // Bắt đầu đếm ngược khi trang web tải
+    window.onload = startCountdown;
+</script>
+
 </html>
